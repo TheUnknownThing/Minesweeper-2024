@@ -7,6 +7,8 @@
  * Just finish server.h and run!
  */
 int main() {
+  freopen("input.txt", "r", stdin);
+  freopen("output.txt", "w", stdout);
   InitMap();
   PrintMap();
   while (true) {
