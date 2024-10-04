@@ -57,10 +57,10 @@ RM = /usr/bin/cmake -E rm -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/hanning/Project/Minesweeper-2024
+CMAKE_SOURCE_DIR = /root/Code/Projects/Minesweeper-2024
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/hanning/Project/Minesweeper-2024/build
+CMAKE_BINARY_DIR = /root/Code/Projects/Minesweeper-2024/build
 
 #=============================================================================
 # Targets provided globally by CMake.
@@ -87,14 +87,14 @@ rebuild_cache/fast: rebuild_cache
 
 # The main all target
 all: cmake_check_build_system
-	cd /home/hanning/Project/Minesweeper-2024/build && $(CMAKE_COMMAND) -E cmake_progress_start /home/hanning/Project/Minesweeper-2024/build/CMakeFiles /home/hanning/Project/Minesweeper-2024/build/src//CMakeFiles/progress.marks
-	cd /home/hanning/Project/Minesweeper-2024/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 src/all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/hanning/Project/Minesweeper-2024/build/CMakeFiles 0
+	cd /root/Code/Projects/Minesweeper-2024/build && $(CMAKE_COMMAND) -E cmake_progress_start /root/Code/Projects/Minesweeper-2024/build/CMakeFiles /root/Code/Projects/Minesweeper-2024/build/src//CMakeFiles/progress.marks
+	cd /root/Code/Projects/Minesweeper-2024/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 src/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /root/Code/Projects/Minesweeper-2024/build/CMakeFiles 0
 .PHONY : all
 
 # The main clean target
 clean:
-	cd /home/hanning/Project/Minesweeper-2024/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 src/clean
+	cd /root/Code/Projects/Minesweeper-2024/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 src/clean
 .PHONY : clean
 
 # The main clean target
@@ -103,22 +103,22 @@ clean/fast: clean
 
 # Prepare targets for installation.
 preinstall: all
-	cd /home/hanning/Project/Minesweeper-2024/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 src/preinstall
+	cd /root/Code/Projects/Minesweeper-2024/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 src/preinstall
 .PHONY : preinstall
 
 # Prepare targets for installation.
 preinstall/fast:
-	cd /home/hanning/Project/Minesweeper-2024/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 src/preinstall
+	cd /root/Code/Projects/Minesweeper-2024/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 src/preinstall
 .PHONY : preinstall/fast
 
 # clear depends
 depend:
-	cd /home/hanning/Project/Minesweeper-2024/build && $(CMAKE_COMMAND) -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 1
+	cd /root/Code/Projects/Minesweeper-2024/build && $(CMAKE_COMMAND) -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 1
 .PHONY : depend
 
 # Convenience name for target.
 src/CMakeFiles/server.dir/rule:
-	cd /home/hanning/Project/Minesweeper-2024/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 src/CMakeFiles/server.dir/rule
+	cd /root/Code/Projects/Minesweeper-2024/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 src/CMakeFiles/server.dir/rule
 .PHONY : src/CMakeFiles/server.dir/rule
 
 # Convenience name for target.
@@ -127,12 +127,12 @@ server: src/CMakeFiles/server.dir/rule
 
 # fast build rule for target.
 server/fast:
-	cd /home/hanning/Project/Minesweeper-2024/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/server.dir/build.make src/CMakeFiles/server.dir/build
+	cd /root/Code/Projects/Minesweeper-2024/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/server.dir/build.make src/CMakeFiles/server.dir/build
 .PHONY : server/fast
 
 # Convenience name for target.
 src/CMakeFiles/client.dir/rule:
-	cd /home/hanning/Project/Minesweeper-2024/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 src/CMakeFiles/client.dir/rule
+	cd /root/Code/Projects/Minesweeper-2024/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 src/CMakeFiles/client.dir/rule
 .PHONY : src/CMakeFiles/client.dir/rule
 
 # Convenience name for target.
@@ -141,7 +141,7 @@ client: src/CMakeFiles/client.dir/rule
 
 # fast build rule for target.
 client/fast:
-	cd /home/hanning/Project/Minesweeper-2024/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/client.dir/build.make src/CMakeFiles/client.dir/build
+	cd /root/Code/Projects/Minesweeper-2024/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/client.dir/build.make src/CMakeFiles/client.dir/build
 .PHONY : client/fast
 
 advanced.o: advanced.cpp.o
@@ -149,7 +149,7 @@ advanced.o: advanced.cpp.o
 
 # target to build an object file
 advanced.cpp.o:
-	cd /home/hanning/Project/Minesweeper-2024/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/client.dir/build.make src/CMakeFiles/client.dir/advanced.cpp.o
+	cd /root/Code/Projects/Minesweeper-2024/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/client.dir/build.make src/CMakeFiles/client.dir/advanced.cpp.o
 .PHONY : advanced.cpp.o
 
 advanced.i: advanced.cpp.i
@@ -157,7 +157,7 @@ advanced.i: advanced.cpp.i
 
 # target to preprocess a source file
 advanced.cpp.i:
-	cd /home/hanning/Project/Minesweeper-2024/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/client.dir/build.make src/CMakeFiles/client.dir/advanced.cpp.i
+	cd /root/Code/Projects/Minesweeper-2024/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/client.dir/build.make src/CMakeFiles/client.dir/advanced.cpp.i
 .PHONY : advanced.cpp.i
 
 advanced.s: advanced.cpp.s
@@ -165,7 +165,7 @@ advanced.s: advanced.cpp.s
 
 # target to generate assembly for a file
 advanced.cpp.s:
-	cd /home/hanning/Project/Minesweeper-2024/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/client.dir/build.make src/CMakeFiles/client.dir/advanced.cpp.s
+	cd /root/Code/Projects/Minesweeper-2024/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/client.dir/build.make src/CMakeFiles/client.dir/advanced.cpp.s
 .PHONY : advanced.cpp.s
 
 basic.o: basic.cpp.o
@@ -173,7 +173,7 @@ basic.o: basic.cpp.o
 
 # target to build an object file
 basic.cpp.o:
-	cd /home/hanning/Project/Minesweeper-2024/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/server.dir/build.make src/CMakeFiles/server.dir/basic.cpp.o
+	cd /root/Code/Projects/Minesweeper-2024/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/server.dir/build.make src/CMakeFiles/server.dir/basic.cpp.o
 .PHONY : basic.cpp.o
 
 basic.i: basic.cpp.i
@@ -181,7 +181,7 @@ basic.i: basic.cpp.i
 
 # target to preprocess a source file
 basic.cpp.i:
-	cd /home/hanning/Project/Minesweeper-2024/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/server.dir/build.make src/CMakeFiles/server.dir/basic.cpp.i
+	cd /root/Code/Projects/Minesweeper-2024/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/server.dir/build.make src/CMakeFiles/server.dir/basic.cpp.i
 .PHONY : basic.cpp.i
 
 basic.s: basic.cpp.s
@@ -189,7 +189,7 @@ basic.s: basic.cpp.s
 
 # target to generate assembly for a file
 basic.cpp.s:
-	cd /home/hanning/Project/Minesweeper-2024/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/server.dir/build.make src/CMakeFiles/server.dir/basic.cpp.s
+	cd /root/Code/Projects/Minesweeper-2024/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/server.dir/build.make src/CMakeFiles/server.dir/basic.cpp.s
 .PHONY : basic.cpp.s
 
 # Help Target
@@ -219,6 +219,6 @@ help:
 # No rule that depends on this can have commands that come from listfiles
 # because they might be regenerated.
 cmake_check_build_system:
-	cd /home/hanning/Project/Minesweeper-2024/build && $(CMAKE_COMMAND) -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 0
+	cd /root/Code/Projects/Minesweeper-2024/build && $(CMAKE_COMMAND) -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 0
 .PHONY : cmake_check_build_system
 

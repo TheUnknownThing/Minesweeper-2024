@@ -8,7 +8,7 @@ set(CMAKE_DEPENDS_LANGUAGES
 
 # The set of dependency files which are needed:
 set(CMAKE_DEPENDS_DEPENDENCY_FILES
-  "/home/hanning/Project/Minesweeper-2024/src/basic.cpp" "src/CMakeFiles/server.dir/basic.cpp.o" "gcc" "src/CMakeFiles/server.dir/basic.cpp.o.d"
+  "/root/Code/Projects/Minesweeper-2024/src/basic.cpp" "src/CMakeFiles/server.dir/basic.cpp.o" "gcc" "src/CMakeFiles/server.dir/basic.cpp.o.d"
   )
 
 # Targets to which this target links.

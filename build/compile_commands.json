@@ -1,12 +1,12 @@
 [
 {
-  "directory": "/home/hanning/Project/Minesweeper-2024/build/src",
-  "command": "/usr/bin/clang++  -I/home/hanning/Project/Minesweeper-2024/src/include -g -std=gnu++17 -o CMakeFiles/server.dir/basic.cpp.o -c /home/hanning/Project/Minesweeper-2024/src/basic.cpp",
-  "file": "/home/hanning/Project/Minesweeper-2024/src/basic.cpp"
+  "directory": "/root/Code/Projects/Minesweeper-2024/build/src",
+  "command": "/usr/bin/g++  -I/root/Code/Projects/Minesweeper-2024/src/include -g -o CMakeFiles/server.dir/basic.cpp.o -c /root/Code/Projects/Minesweeper-2024/src/basic.cpp",
+  "file": "/root/Code/Projects/Minesweeper-2024/src/basic.cpp"
 },
 {
-  "directory": "/home/hanning/Project/Minesweeper-2024/build/src",
-  "command": "/usr/bin/clang++  -I/home/hanning/Project/Minesweeper-2024/src/include -g -std=gnu++17 -o CMakeFiles/client.dir/advanced.cpp.o -c /home/hanning/Project/Minesweeper-2024/src/advanced.cpp",
-  "file": "/home/hanning/Project/Minesweeper-2024/src/advanced.cpp"
+  "directory": "/root/Code/Projects/Minesweeper-2024/build/src",
+  "command": "/usr/bin/g++  -I/root/Code/Projects/Minesweeper-2024/src/include -g -o CMakeFiles/client.dir/advanced.cpp.o -c /root/Code/Projects/Minesweeper-2024/src/advanced.cpp",
+  "file": "/root/Code/Projects/Minesweeper-2024/src/advanced.cpp"
 }
 ]

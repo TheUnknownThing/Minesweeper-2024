@@ -57,14 +57,14 @@
 				{
 					"directoryIndex" : 1,
 					"id" : "client::@145eef247bfb46b6828c",
-					"jsonFile" : "target-client-Debug-6ac9fa53b2adcef0ebe1.json",
+					"jsonFile" : "target-client-Debug-f1c6982ef00e5680a955.json",
 					"name" : "client",
 					"projectIndex" : 0
 				},
 				{
 					"directoryIndex" : 1,
 					"id" : "server::@145eef247bfb46b6828c",
-					"jsonFile" : "target-server-Debug-41cf65d8b0f86cc5b2fe.json",
+					"jsonFile" : "target-server-Debug-fe9d6f4565fad93e2a60.json",
 					"name" : "server",
 					"projectIndex" : 0
 				}
@@ -74,8 +74,8 @@
 	"kind" : "codemodel",
 	"paths" : 
 	{
-		"build" : "/home/hanning/Project/Minesweeper-2024/build",
-		"source" : "/home/hanning/Project/Minesweeper-2024"
+		"build" : "/root/Code/Projects/Minesweeper-2024/build",
+		"source" : "/root/Code/Projects/Minesweeper-2024"
 	},
 	"version" : 
 	{

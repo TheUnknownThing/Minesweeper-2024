@@ -1,4 +1,4 @@
-# Install script for directory: /home/hanning/Project/Minesweeper-2024/src
+# Install script for directory: /root/Code/Projects/Minesweeper-2024/src
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
@@ -39,6 +39,6 @@ endif()
 
 # Set default install directory permissions.
 if(NOT DEFINED CMAKE_OBJDUMP)
-  set(CMAKE_OBJDUMP "/usr/bin/llvm-objdump")
+  set(CMAKE_OBJDUMP "/usr/bin/objdump")
 endif()
 

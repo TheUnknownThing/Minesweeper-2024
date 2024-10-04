@@ -1,1 +1,1 @@
-/usr/bin/clang++ -g CMakeFiles/client.dir/advanced.cpp.o -o client 
+/usr/bin/g++ -g CMakeFiles/client.dir/advanced.cpp.o -o client 
