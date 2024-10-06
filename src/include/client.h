@@ -194,7 +194,125 @@ bool DiscoverPatterns1() {
   return false;
 }
 
-bool DiscoverPatterns2() { return false; }
+bool DiscoverPatterns2() {
+  for (int r = 0; r < rows; r++) {
+    for (int c = 0; c < columns; c++) {
+      if (map_state[r][c] == 1) {
+        // Check for 1?1 pattern horizontally
+        if (c + 2 < columns && map_state[r][c + 2] == 1 && map_state[r][c + 1] == -2) {
+          int dx[5] = {1, 1, 0, -1, -1};
+          int dy[5] = {0, -1, -1, -1, 0};
+          bool LeftOpen = true;
+          for (int i = 0; i < 5; i++) {
+            if (r + dx[i] >= 0 && r + dx[i] < rows && c + dy[i] >= 0 && c + dy[i] < columns &&
+                map_state[r + dx[i]][c + dy[i]] == -2) {
+              LeftOpen = false;
+            }
+          }
+          int dx2[5] = {1, 1, 0, -1, -1};
+          int dy2[5] = {0, 1, 1, 1, 0};
+          bool RightOpen = true;
+          for (int i = 0; i < 5; i++) {
+            if (r + dx2[i] >= 0 && r + dx2[i] < rows && c + dy2[i] >= 0 && c + dy2[i] < columns &&
+                map_state[r + dx2[i]][c + dy2[i]] == -2) {
+              RightOpen = false;
+            }
+          }
+          if (LeftOpen) {
+            int exc[3] = {1, 0, -1};
+            for (int i = 0; i < 3; i++) {
+              if (r + exc[i] >= 0 && r + exc[i] < rows && c - 1 >= 0 && c - 1 < columns &&
+                  map_state[r + exc[i]][c + 3] == -2) {
+                // std::cout << "Pattern-Discover " << r + exc[i] << " " << c - 1 << std::endl;  // debug
+                Execute(r + exc[i], c + 3, 0);
+                return true;
+              }
+              if (r + exc[i] >= 0 && r + exc[i] < rows && c + 2 >= 0 && c + 2 < columns &&
+                  map_state[r + exc[i]][c + 2] == -2) {
+                // std::cout << "Pattern-Discover " << r + exc[i] << " " << c + 2 << std::endl;  // debug
+                Execute(r + exc[i], c + 2, 0);
+                return true;
+              }
+            }
+          }
+          if (RightOpen) {
+            int exc[3] = {1, 0, -1};
+            for (int i = 0; i < 3; i++) {
+              if (r + exc[i] >= 0 && r + exc[i] < rows && c + 4 >= 0 && c + 4 < columns &&
+                  map_state[r + exc[i]][c - 1] == -2) {
+                // std::cout << "Pattern-Discover " << r + exc[i] << " " << c + 4 << std::endl;  // debug
+                Execute(r + exc[i], c - 1, 0);
+                return true;
+              }
+              if (r + exc[i] >= 0 && r + exc[i] < rows && c >= 0 && c < columns && map_state[r + exc[i]][c] == -2) {
+                // std::cout << "Pattern-Discover " << r + exc[i] << " " << c<< std::endl;  // debug
+                Execute(r + exc[i], c, 0);
+                return true;
+              }
+            }
+          }
+        }
+
+        // vertically
+        if (r + 2 < rows && map_state[r + 2][c] == 1 && map_state[r + 1][c] == -2) {
+          int dx[5] = {0, -1, -1, -1, 0};
+          int dy[5] = {1, 1, 0, -1, -1};
+          bool UpOpen = true;
+          for (int i = 0; i < 5; i++) {
+            if (r + dx[i] >= 0 && r + dx[i] < rows && c + dy[i] >= 0 && c + dy[i] < columns &&
+                map_state[r + dx[i]][c + dy[i]] == -2) {
+              UpOpen = false;
+            }
+          }
+          int dx2[5] = {0, 1, 1, 1, 0};
+          int dy2[5] = {1, 1, 0, -1, -1};
+          bool DownOpen = true;
+          for (int i = 0; i < 5; i++) {
+            if (r + dx2[i] >= 0 && r + dx2[i] < rows && c + dy2[i] >= 0 && c + dy2[i] < columns &&
+                map_state[r + dx2[i]][c + dy2[i]] == -2) {
+              DownOpen = false;
+            }
+          }
+          if (UpOpen) {
+            int exc[3] = {1, 0, -1};
+            for (int i = 0; i < 3; i++) {
+              if (r - 1 >= 0 && r - 1 < rows && c + exc[i] >= 0 && c + exc[i] < columns &&
+                  map_state[r + 3][c + exc[i]] == -2) {
+                // std::cout << "Pattern-Discover " << r - 1 << " " << c + exc[i] << std::endl;  // debug
+                Execute(r + 3, c + exc[i], 0);
+                return true;
+              }
+              if (r + 2 >= 0 && r + 2 < rows && c + exc[i] >= 0 && c + exc[i] < columns &&
+                  map_state[r + 2][c + exc[i]] == -2) {
+                // std::cout << "Pattern-Discover " << r + 2 << " " << c + exc[i] << std::endl;  // debug
+                Execute(r + 2, c + exc[i], 0);
+                return true;
+              }
+            }
+          }
+          if (DownOpen) {
+            int exc[3] = {1, 0, -1};
+            for (int i = 0; i < 3; i++) {
+              if (r + 4 >= 0 && r + 4 < rows && c + exc[i] >= 0 && c + exc[i] < columns &&
+                  map_state[r - 1][c + exc[i]] == -2) {
+                // std::cout << "Pattern-Discover " << r + 4 << " " << c + exc[i] << std::endl;  // debug
+                Execute(r - 1, c + exc[i], 0);
+                return true;
+              }
+              if (r >= 0 && r < rows && c + exc[i] >= 0 && c + exc[i] < columns &&
+                  map_state[r][c + exc[i]] == -2) {
+                // std::cout << "Pattern-Discover " << r << " " << c + exc[i] << std::endl;  // debug
+                Execute(r, c + exc[i], 0);
+                return true;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+  return false;
+}
 
 bool MarkBestPossibleBlock() {
   // Mark the block with the highest probability of being a mine
@@ -242,7 +360,7 @@ bool MarkBestPossibleBlock() {
 
 void RandomDecide() {
   int r, c;
-  srand(time(NULL));
+  srand(202410);
   do {
     r = rand() % rows;
     c = rand() % columns;

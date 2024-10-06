@@ -100,6 +100,6 @@ void TestBatch() {
 }
 
 int main() {
-  TestSingle();
-  //TestBatch();
+  //TestSingle();
+  TestBatch();
 }
