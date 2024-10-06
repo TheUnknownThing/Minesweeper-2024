@@ -79,67 +79,109 @@ void ReadMap() {
  * mind and make your decision here!
  */
 
-bool SearchPossibleMark(int r, int c);
+bool SearchPossibleMark();
 
-void RandomDecide();
+bool DiscoverPatterns();
 
 bool MarkBestPossibleBlock();
 
+void RandomDecide();
+
 void Decide() {
-  bool isMarked = false;
-  for (int i = 0; i < rows; i++) {
-    for (int j = 0; j < columns; j++) {
-      if (map_state[i][j] > 0) {
-        isMarked = SearchPossibleMark(i, j);
-        if (isMarked) {
-          return;
-        }
+  if (!SearchPossibleMark()) {
+    if (!DiscoverPatterns()) {
+      if (!MarkBestPossibleBlock()) {
+        RandomDecide();
       }
     }
   }
-  isMarked = MarkBestPossibleBlock();
-  if (isMarked) {
-    return;
-  }
-  // otherwise, let's randomly choose a block to visit
-  RandomDecide();
 }
 
-bool SearchPossibleMark(int r, int c) {
+bool SearchPossibleMark() {
   // Without any trick, only mark the block when unknown blocks around == number of mines around
-  int mine_around = map_state[r][c];
-  int unknown_blocks = 0;
-  for (int i = 0; i < 8; i++) {
-    int new_x = r + directions_x[i];
-    int new_y = c + directions_y[i];
-    if (new_x >= 0 && new_x < rows && new_y >= 0 && new_y < columns) {
-      if (map_state[new_x][new_y] == -2) {
-        unknown_blocks++;
-      }
-      if (map_state[new_x][new_y] == -1) {
-        mine_around--;
-      }
-    }
-  }
-  if (mine_around == 0 && unknown_blocks > 0) {
-    // auto explore
-    //std::cout << "AutoExplore " << r << " " << c << std::endl; // debug
-    Execute(r, c, 2);
-    return true;
-  }
-  if (unknown_blocks == mine_around && mine_around > 0) {
-    for (int i = 0; i < 8; i++) {
-      int new_x = r + directions_x[i];
-      int new_y = c + directions_y[i];
-      if (new_x >= 0 && new_x < rows && new_y >= 0 && new_y < columns) {
-        if (map_state[new_x][new_y] == -2) {
-          //std::cout << "MarkMine " << new_x << " " << new_y << std::endl; // debug
-          Execute(new_x, new_y, 1);
-          map_state[new_x][new_y] = -1;
+  bool found = false;
+  for (int r = 0; r < rows; r++) {
+    for (int c = 0; c < columns; c++) {
+      if (map_state[r][c] > 0) {
+        int mine_around = map_state[r][c];
+        int unknown_blocks = 0;
+        for (int i = 0; i < 8; i++) {
+          int new_x = r + directions_x[i];
+          int new_y = c + directions_y[i];
+          if (new_x >= 0 && new_x < rows && new_y >= 0 && new_y < columns) {
+            if (map_state[new_x][new_y] == -2) {
+              unknown_blocks++;
+            }
+            if (map_state[new_x][new_y] == -1) {
+              mine_around--;
+            }
+          }
+        }
+        map_state[r][c] = mine_around;
+        if (mine_around == 0 && unknown_blocks > 0) {
+          // std::cout << "Known-Explore " << r << " " << c << std::endl;  // debug
+          Execute(r, c, 2);
+          return true;
+        }
+        if (unknown_blocks == mine_around && mine_around > 0) {
+          for (int i = 0; i < 8; i++) {
+            int new_x = r + directions_x[i];
+            int new_y = c + directions_y[i];
+            if (new_x >= 0 && new_x < rows && new_y >= 0 && new_y < columns) {
+              if (map_state[new_x][new_y] == -2) {
+                // std::cout << "Known-MarkMine " << new_x << " " << new_y << std::endl;  // debug
+                Execute(new_x, new_y, 1);
+                return true;
+              }
+            }
+          }
         }
       }
     }
-    return true;
+  }
+  return found;
+}
+
+bool DiscoverPatterns() {
+  for (int r = 0; r < rows; r++) {
+    for (int c = 0; c < columns; c++) {
+      if (map_state[r][c] == 1) {
+        if (c + 1 < columns && map_state[r][c + 1] == 1) {
+          // Horizontal 1-1
+          if ((c + 1 == columns - 1 || c == 0) || (map_state[r + 1][c - 1] >= 0 && map_state[r - 1][c - 1] >= 0) ||
+              (map_state[r + 1][c + 2] >= 0 && map_state[r - 1][c + 2] >= 0)) {
+            int dx[6] = {1, 0, -1, 1, 0, -1};
+            int dy[6] = {-1, -1, -1, 2, 2, 2};
+            int count = 0;
+            for (int count = 0; count < 6; count++) {
+              if (r + dx[count] >= 0 && r + dx[count] < rows && c + dy[count] >= 0 && c + dy[count] < columns &&
+                  map_state[r + dx[count]][c + dy[count]] == -2) {
+                // std::cout << "Pattern-Discover " << r + dx[count] << " " << c + dy[count] << std::endl;  // debug
+                Execute(r + dx[count], c + dy[count], 0);
+                return true;
+              }
+            }
+          }
+        }
+        if (r + 1 < rows && map_state[r + 1][c] == 1) {
+          // Vertical 1-1
+          if ((r + 1 == rows - 1 || r == 0) || (map_state[r - 1][c + 1] >= 0 && map_state[r - 1][c - 1] >= 0) ||
+              (map_state[r + 2][c + 1] >= 0 && map_state[r + 2][c - 1] >= 0)) {
+            int dx[6] = {-1, -1, -1, 2, 2, 2};
+            int dy[6] = {1, 0, -1, 1, 0, -1};
+            int count = 0;
+            for (int count = 0; count < 6; count++) {
+              if (r + dx[count] >= 0 && r + dx[count] < rows && c + dy[count] >= 0 && c + dy[count] < columns &&
+                  map_state[r + dx[count]][c + dy[count]] == -2) {
+                // std::cout << "Pattern-Discover " << r + dx[count] << " " << c + dy[count] << std::endl;  // debug
+                Execute(r + dx[count], c + dy[count], 0);
+                return true;
+              }
+            }
+          }
+        }
+      }
+    }
   }
   return false;
 }
@@ -191,23 +233,23 @@ bool MarkBestPossibleBlock() {
       }
     }
   }
-  if (best_block[0] == -1 && best_block[1] == -1) {
+  if ((best_block[0] == -1 && best_block[1] == -1) || max_posibility <= 0.5) {
     return false;
   }
-  //std::cout << "Possibility-MarkMine " << best_block[0] << " " << best_block[1] << std::endl; // debug
+  // std::cout << "Possibility-MarkMine " << best_block[0] << " " << best_block[1] << std::endl; // debug
   Execute(best_block[0], best_block[1], 1);
   map_state[best_block[0]][best_block[1]] = -1;
   return true;
 }
 
 void RandomDecide() {
-  srand(time(0));
-  int r = rand() % rows;
-  int c = rand() % columns;
-  while (map_state[r][c] != -2) {
+  int r, c;
+  srand(time(NULL));
+  do {
     r = rand() % rows;
     c = rand() % columns;
-  }
+  } while (map_state[r][c] != -2);
+  // std::cout << "Random " << r << " " << c << std::endl; // debug
   Execute(r, c, 0);
 }
 

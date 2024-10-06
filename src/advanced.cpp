@@ -47,8 +47,8 @@ void Execute(int row, int column, int type) {
   std::cin.rdbuf(iss.rdbuf());
   ReadMap();
   std::cin.rdbuf(old_input_buffer);
-  //PrintMap(); // These two lines may help you debug
-  //std::cout << std::endl;
+  PrintMap(); // These two lines may help you debug
+  std::cout << std::endl;
 }
 
 /**
@@ -101,5 +101,5 @@ void TestBatch() {
 
 int main() {
   TestSingle();
-  // TestBatch();
+  //TestBatch();
 }
