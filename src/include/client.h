@@ -9,6 +9,7 @@ extern int columns;      // The count of columns of the game map.
 extern int total_mines;  // The count of mines of the game map.
 
 int map_state[30][30];
+int unknown_around[30][30];
 
 int directions_x[] = {0, 1, 0, -1, 1, 1, -1, -1};
 int directions_y[] = {1, 0, -1, 0, 1, -1, 1, -1};
@@ -81,7 +82,9 @@ void ReadMap() {
 
 bool SearchPossibleMark();
 
-bool DiscoverPatterns();
+bool DiscoverPatterns1();
+
+bool DiscoverPatterns2();
 
 bool MarkBestPossibleBlock();
 
@@ -89,9 +92,11 @@ void RandomDecide();
 
 void Decide() {
   if (!SearchPossibleMark()) {
-    if (!DiscoverPatterns()) {
-      if (!MarkBestPossibleBlock()) {
-        RandomDecide();
+    if (!DiscoverPatterns1()) {
+      if (!DiscoverPatterns2()) {
+        if (!MarkBestPossibleBlock()) {
+          RandomDecide();
+        }
       }
     }
   }
@@ -118,12 +123,13 @@ bool SearchPossibleMark() {
           }
         }
         map_state[r][c] = mine_around;
+        unknown_around[r][c] = unknown_blocks;
         if (mine_around == 0 && unknown_blocks > 0) {
           // std::cout << "Known-Explore " << r << " " << c << std::endl;  // debug
           Execute(r, c, 2);
           return true;
         }
-        if (unknown_blocks == mine_around && mine_around > 0) {
+        if (unknown_blocks <= mine_around && mine_around > 0) {
           for (int i = 0; i < 8; i++) {
             int new_x = r + directions_x[i];
             int new_y = c + directions_y[i];
@@ -142,14 +148,15 @@ bool SearchPossibleMark() {
   return found;
 }
 
-bool DiscoverPatterns() {
+bool DiscoverPatterns1() {
   for (int r = 0; r < rows; r++) {
     for (int c = 0; c < columns; c++) {
       if (map_state[r][c] == 1) {
         if (c + 1 < columns && map_state[r][c + 1] == 1) {
           // Horizontal 1-1
-          if ((c + 1 == columns - 1 || c == 0) || (map_state[r + 1][c - 1] >= 0 && map_state[r - 1][c - 1] >= 0) ||
-              (map_state[r + 1][c + 2] >= 0 && map_state[r - 1][c + 2] >= 0)) {
+          if ((c + 1 == columns - 1 || c == 0) ||
+              (map_state[r + 1][c - 1] != -2 && map_state[r - 1][c - 1] != -2 && map_state[r][c - 1] != -2) ||
+              (map_state[r + 1][c + 2] != -2 && map_state[r - 1][c + 2] != -2 && map_state[r][c + 2] != -2)) {
             int dx[6] = {1, 0, -1, 1, 0, -1};
             int dy[6] = {-1, -1, -1, 2, 2, 2};
             int count = 0;
@@ -165,8 +172,9 @@ bool DiscoverPatterns() {
         }
         if (r + 1 < rows && map_state[r + 1][c] == 1) {
           // Vertical 1-1
-          if ((r + 1 == rows - 1 || r == 0) || (map_state[r - 1][c + 1] >= 0 && map_state[r - 1][c - 1] >= 0) ||
-              (map_state[r + 2][c + 1] >= 0 && map_state[r + 2][c - 1] >= 0)) {
+          if ((r + 1 == rows - 1 || r == 0) ||
+              (map_state[r - 1][c + 1] != -2 && map_state[r - 1][c - 1] != -2 && map_state[r - 1][c] != -2) ||
+              (map_state[r + 2][c + 1] != -2 && map_state[r + 2][c - 1] != -2 && map_state[r + 2][c] != -2)) {
             int dx[6] = {-1, -1, -1, 2, 2, 2};
             int dy[6] = {1, 0, -1, 1, 0, -1};
             int count = 0;
@@ -186,6 +194,8 @@ bool DiscoverPatterns() {
   return false;
 }
 
+bool DiscoverPatterns2() { return false; }
+
 bool MarkBestPossibleBlock() {
   // Mark the block with the highest probability of being a mine
   double max_posibility = 0;
@@ -195,19 +205,7 @@ bool MarkBestPossibleBlock() {
     for (int j = 0; j < columns; j++) {
       if (map_state[i][j] > 0) {
         int mine_around = map_state[i][j];
-        int unknown_blocks = 0;
-        for (int k = 0; k < 8; k++) {
-          int new_x = i + directions_x[k];
-          int new_y = j + directions_y[k];
-          if (new_x >= 0 && new_x < rows && new_y >= 0 && new_y < columns) {
-            if (map_state[new_x][new_y] == -2) {
-              unknown_blocks++;
-            }
-            if (map_state[new_x][new_y] == -1) {
-              mine_around--;
-            }
-          }
-        }
+        int unknown_blocks = unknown_around[i][j];
         // set the unknown blocks around to have a possibility of being a mine
         if (mine_around > 0) {
           for (int k = 0; k < 8; k++) {
@@ -233,7 +231,7 @@ bool MarkBestPossibleBlock() {
       }
     }
   }
-  if ((best_block[0] == -1 && best_block[1] == -1) || max_posibility <= 0.5) {
+  if ((best_block[0] == -1 && best_block[1] == -1) || max_posibility <= 0.8) {
     return false;
   }
   // std::cout << "Possibility-MarkMine " << best_block[0] << " " << best_block[1] << std::endl; // debug
