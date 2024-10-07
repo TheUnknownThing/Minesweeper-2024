@@ -322,73 +322,75 @@ bool DiscoverPatterns2() {
 }
 
 bool DiscoverPatterns3() {
-  for (int r = 0; r < rows; r++) {
-    for (int c = 0; c < columns; c++) {
-      // horizontal 1-2 pattern, actually it could also be 1-3, 1-4, etc.
-      if (c + 2 < columns && map_state[r][c] == 1 && map_state[r][c + 1] == 2) {
-        int dx[3] = {-1, 0, 1};
-        int private_unknown = 0;
-        int private_block = 0;
-        for (int i = 0; i < 3; i++) {
-          if (r + dx[i] >= 0 && r + dx[i] < rows && map_state[r + dx[i]][c + 2] == -2) {
-            private_unknown++;
-            private_block = i;
+  for (int n = 4; n >= 2; n--) {
+    for (int r = 0; r < rows; r++) {
+      for (int c = 0; c < columns; c++) {
+        // horizontal 1-n pattern, actually it could be 1-2, 1-3, 1-4, etc.
+        if (c + 2 < columns && map_state[r][c] == 1 && map_state[r][c + 1] == n) {
+          int dx[3] = {-1, 0, 1};
+          int private_unknown = 0;
+          int private_block = 0;
+          for (int i = 0; i < 3; i++) {
+            if (r + dx[i] >= 0 && r + dx[i] < rows && map_state[r + dx[i]][c + 2] == -2) {
+              private_unknown++;
+              private_block = i;
+            }
+          }
+          if (private_unknown == n - 1) {
+            Execute(r + dx[private_block], c + 2, 1);
+            return true;
           }
         }
-        if (private_unknown == 1) {
-          Execute(r + dx[private_block], c + 2, 1);
-          return true;
-        }
-      }
 
-      // horizontal 2-1 pattern
-      if (c - 1 >= 0 && c + 1 < columns && map_state[r][c] == 2 && map_state[r][c + 1] == 1) {
-        int dx[3] = {-1, 0, 1};
-        int private_unknown = 0;
-        int private_block = 0;
-        for (int i = 0; i < 3; i++) {
-          if (r + dx[i] >= 0 && r + dx[i] < rows && map_state[r + dx[i]][c - 1] == -2) {
-            private_unknown++;
-            private_block = i;
+        // horizontal n-1 pattern
+        if (c - 1 >= 0 && c + 1 < columns && map_state[r][c] == n && map_state[r][c + 1] == 1) {
+          int dx[3] = {-1, 0, 1};
+          int private_unknown = 0;
+          int private_block = 0;
+          for (int i = 0; i < 3; i++) {
+            if (r + dx[i] >= 0 && r + dx[i] < rows && map_state[r + dx[i]][c - 1] == -2) {
+              private_unknown++;
+              private_block = i;
+            }
+          }
+          if (private_unknown == n - 1) {
+            Execute(r + dx[private_block], c - 1, 1);
+            return true;
           }
         }
-        if (private_unknown == 1) {
-          Execute(r + dx[private_block], c - 1, 1);
-          return true;
-        }
-      }
 
-      // vertical 1-2 pattern
-      if (r + 2 < rows && map_state[r][c] == 1 && map_state[r + 1][c] == 2) {
-        int dy[3] = {-1, 0, 1};
-        int private_unknown = 0;
-        int private_block = 0;
-        for (int i = 0; i < 3; i++) {
-          if (c + dy[i] >= 0 && c + dy[i] < columns && map_state[r + 2][c + dy[i]] == -2) {
-            private_unknown++;
-            private_block = i;
+        // vertical 1-n pattern
+        if (r + 2 < rows && map_state[r][c] == 1 && map_state[r + 1][c] == n) {
+          int dy[3] = {-1, 0, 1};
+          int private_unknown = 0;
+          int private_block = 0;
+          for (int i = 0; i < 3; i++) {
+            if (c + dy[i] >= 0 && c + dy[i] < columns && map_state[r + 2][c + dy[i]] == -2) {
+              private_unknown++;
+              private_block = i;
+            }
+          }
+          if (private_unknown == n - 1) {
+            Execute(r + 2, c + dy[private_block], 1);
+            return true;
           }
         }
-        if (private_unknown == 1) {
-          Execute(r + 2, c + dy[private_block], 1);
-          return true;
-        }
-      }
 
-      // vertical 2-1 pattern
-      if (r - 1 >= 0 && r + 1 < rows && map_state[r][c] == 2 && map_state[r + 1][c] == 1) {
-        int dy[3] = {-1, 0, 1};
-        int private_unknown = 0;
-        int private_block = 0;
-        for (int i = 0; i < 3; i++) {
-          if (c + dy[i] >= 0 && c + dy[i] < columns && map_state[r - 1][c + dy[i]] == -2) {
-            private_unknown++;
-            private_block = i;
+        // vertical n-1 pattern
+        if (r - 1 >= 0 && r + 1 < rows && map_state[r][c] == n && map_state[r + 1][c] == 1) {
+          int dy[3] = {-1, 0, 1};
+          int private_unknown = 0;
+          int private_block = 0;
+          for (int i = 0; i < 3; i++) {
+            if (c + dy[i] >= 0 && c + dy[i] < columns && map_state[r - 1][c + dy[i]] == -2) {
+              private_unknown++;
+              private_block = i;
+            }
           }
-        }
-        if (private_unknown == 1) {
-          Execute(r - 1, c + dy[private_block], 1);
-          return true;
+          if (private_unknown == n - 1) {
+            Execute(r - 1, c + dy[private_block], 1);
+            return true;
+          }
         }
       }
     }
@@ -545,7 +547,7 @@ bool MarkBestPossibleBlock() {
 
 void RandomDecide() {
   int r, c;
-  srand(114514);
+  srand(time(NULL));
   do {
     r = rand() % rows;
     c = rand() % columns;
