@@ -57,14 +57,14 @@
 				{
 					"directoryIndex" : 1,
 					"id" : "client::@145eef247bfb46b6828c",
-					"jsonFile" : "target-client-Debug-f1c6982ef00e5680a955.json",
+					"jsonFile" : "target-client-Debug-24dc6b6971b0bd63ea25.json",
 					"name" : "client",
 					"projectIndex" : 0
 				},
 				{
 					"directoryIndex" : 1,
 					"id" : "server::@145eef247bfb46b6828c",
-					"jsonFile" : "target-server-Debug-fe9d6f4565fad93e2a60.json",
+					"jsonFile" : "target-server-Debug-03507039f41993c9d8db.json",
 					"name" : "server",
 					"projectIndex" : 0
 				}

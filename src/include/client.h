@@ -88,6 +88,8 @@ bool DiscoverPatterns2();
 
 bool DiscoverPatterns3();
 
+bool DiscoverPatterns4();
+
 bool MarkBestPossibleBlock();
 
 void RandomDecide();
@@ -97,8 +99,10 @@ void Decide() {
     if (!DiscoverPatterns1()) {
       if (!DiscoverPatterns2()) {
         if (!DiscoverPatterns3()) {
-          if (!MarkBestPossibleBlock()) {
-            RandomDecide();
+          if (!DiscoverPatterns4()) {
+            if (!MarkBestPossibleBlock()) {
+              RandomDecide();
+            }
           }
         }
       }
@@ -320,131 +324,174 @@ bool DiscoverPatterns2() {
 bool DiscoverPatterns3() {
   for (int r = 0; r < rows; r++) {
     for (int c = 0; c < columns; c++) {
-      // horizontal 1-2 pattern
+      // horizontal 1-2 pattern, actually it could also be 1-3, 1-4, etc.
       if (c + 2 < columns && map_state[r][c] == 1 && map_state[r][c + 1] == 2) {
-        bool up_open = true;
-        bool down_open = true;
-        int dx[6] = {0, -1, -1, -1, -1, 0};
-        int dy[6] = {-1, -1, 0, 1, 2, 2};
-        for (int i = 0; i < 6; i++) {
-          if (r + dx[i] >= 0 && r + dx[i] < rows && c + dy[i] >= 0 && c + dy[i] < columns &&
-              map_state[r + dx[i]][c + dy[i]] == -2) {
-            up_open = false;
+        int dx[3] = {-1, 0, 1};
+        int private_unknown = 0;
+        int private_block = 0;
+        for (int i = 0; i < 3; i++) {
+          if (r + dx[i] >= 0 && r + dx[i] < rows && map_state[r + dx[i]][c + 2] == -2) {
+            private_unknown++;
+            private_block = i;
           }
         }
-        int dx2[6] = {0, 1, 1, 1, 1, 0};
-        int dy2[6] = {-1, -1, 0, 1, 2, 2};
-        for (int i = 0; i < 6; i++) {
-          if (r + dx2[i] >= 0 && r + dx2[i] < rows && c + dy2[i] >= 0 && c + dy2[i] < columns &&
-              map_state[r + dx2[i]][c + dy2[i]] == -2) {
-            down_open = false;
-          }
-        }
-        if (up_open && r + 1 < rows && c + 2 < columns && map_state[r + 1][c + 2] == -2) {
-          // std::cout << "Pattern-Discover " << r + 1 << " " << c + 2 << std::endl;  // debug
-          Execute(r + 1, c + 2, 1);
-          return true;
-        }
-        if (down_open && r - 1 >= 0 && c + 2 < columns && map_state[r - 1][c + 2] == -2) {
-          // std::cout << "Pattern-Discover " << r - 1 << " " << c + 2 << std::endl;  // debug
-          Execute(r - 1, c + 2, 1);
+        if (private_unknown == 1) {
+          Execute(r + dx[private_block], c + 2, 1);
           return true;
         }
       }
 
       // horizontal 2-1 pattern
-      if (c + 2 < columns && map_state[r][c] == 2 && map_state[r][c + 1] == 1) {
-        bool up_open = true;
-        bool down_open = true;
-        int dx[6] = {0, -1, -1, -1, -1, 0};
-        int dy[6] = {-1, -1, 0, 1, 2, 2};
-        for (int i = 0; i < 6; i++) {
-          if (r + dx[i] >= 0 && r + dx[i] < rows && c + dy[i] >= 0 && c + dy[i] < columns &&
-              map_state[r + dx[i]][c + dy[i]] == -2) {
-            up_open = false;
+      if (c - 1 >= 0 && c + 1 < columns && map_state[r][c] == 2 && map_state[r][c + 1] == 1) {
+        int dx[3] = {-1, 0, 1};
+        int private_unknown = 0;
+        int private_block = 0;
+        for (int i = 0; i < 3; i++) {
+          if (r + dx[i] >= 0 && r + dx[i] < rows && map_state[r + dx[i]][c - 1] == -2) {
+            private_unknown++;
+            private_block = i;
           }
         }
-        int dx2[6] = {0, 1, 1, 1, 1, 0};
-        int dy2[6] = {-1, -1, 0, 1, 2, 2};
-        for (int i = 0; i < 6; i++) {
-          if (r + dx2[i] >= 0 && r + dx2[i] < rows && c + dy2[i] >= 0 && c + dy2[i] < columns &&
-              map_state[r + dx2[i]][c + dy2[i]] == -2) {
-            down_open = false;
-          }
-        }
-        if (up_open && r + 1 < rows && c - 1 >= 0 && map_state[r + 1][c - 1] == -2) {
-          // std::cout << "Pattern-Discover " << r + 1 << " " << c - 1 << std::endl;  // debug
-          Execute(r + 1, c - 1, 1);
-          return true;
-        }
-        if (down_open && r - 1 >= 0 && c - 1 >= 0 && map_state[r - 1][c - 1] == -2) {
-          // std::cout << "Pattern-Discover " << r - 1 << " " << c - 1 << std::endl;  // debug
-          Execute(r - 1, c - 1, 1);
+        if (private_unknown == 1) {
+          Execute(r + dx[private_block], c - 1, 1);
           return true;
         }
       }
 
       // vertical 1-2 pattern
       if (r + 2 < rows && map_state[r][c] == 1 && map_state[r + 1][c] == 2) {
-        bool left_open = true;
-        bool right_open = true;
-        int dx[6] = {-1, -1, 0, 1, 2, 2};
-        int dy[6] = {0, -1, -1, -1, -1, 0};
-        for (int i = 0; i < 6; i++) {
-          if (r + dx[i] >= 0 && r + dx[i] < rows && c + dy[i] >= 0 && c + dy[i] < columns &&
-              map_state[r + dx[i]][c + dy[i]] == -2) {
-            left_open = false;
+        int dy[3] = {-1, 0, 1};
+        int private_unknown = 0;
+        int private_block = 0;
+        for (int i = 0; i < 3; i++) {
+          if (c + dy[i] >= 0 && c + dy[i] < columns && map_state[r + 2][c + dy[i]] == -2) {
+            private_unknown++;
+            private_block = i;
           }
         }
-        int dx2[6] = {-1, -1, 0, 1, 2, 2};
-        int dy2[6] = {0, 1, 1, 1, 1, 0};
-        for (int i = 0; i < 6; i++) {
-          if (r + dx2[i] >= 0 && r + dx2[i] < rows && c + dy2[i] >= 0 && c + dy2[i] < columns &&
-              map_state[r + dx2[i]][c + dy2[i]] == -2) {
-            right_open = false;
-          }
-        }
-        if (left_open && r + 2 < rows && c + 1 < columns && map_state[r + 2][c + 1] == -2) {
-          // std::cout << "Pattern-Discover " << r + 2 << " " << c + 1 << std::endl;  // debug
-          Execute(r + 2, c + 1, 1);
+        if (private_unknown == 1) {
+          Execute(r + 2, c + dy[private_block], 1);
           return true;
         }
-        if (right_open && r + 2 < rows && c - 1 >= 0 && map_state[r + 2][c - 1] == -2) {
-          // std::cout << "Pattern-Discover " << r + 2 << " " << c - 1 << std::endl;  // debug
-          Execute(r + 2, c - 1, 1);
-          return true;
-        }
+      }
 
-        // vertical 2-1 pattern
-        if (r + 2 < rows && map_state[r][c] == 2 && map_state[r + 1][c] == 1) {
-          bool left_open = true;
-          bool right_open = true;
-          int dx[6] = {-1, -1, 0, 1, 2, 2};
-          int dy[6] = {0, -1, -1, -1, -1, 0};
-          for (int i = 0; i < 6; i++) {
-            if (r + dx[i] >= 0 && r + dx[i] < rows && c + dy[i] >= 0 && c + dy[i] < columns &&
-                map_state[r + dx[i]][c + dy[i]] == -2) {
-              left_open = false;
-            }
+      // vertical 2-1 pattern
+      if (r - 1 >= 0 && r + 1 < rows && map_state[r][c] == 2 && map_state[r + 1][c] == 1) {
+        int dy[3] = {-1, 0, 1};
+        int private_unknown = 0;
+        int private_block = 0;
+        for (int i = 0; i < 3; i++) {
+          if (c + dy[i] >= 0 && c + dy[i] < columns && map_state[r - 1][c + dy[i]] == -2) {
+            private_unknown++;
+            private_block = i;
           }
-          int dx2[6] = {-1, -1, 0, 1, 2, 2};
-          int dy2[6] = {0, 1, 1, 1, 1, 0};
-          for (int i = 0; i < 6; i++) {
-            if (r + dx2[i] >= 0 && r + dx2[i] < rows && c + dy2[i] >= 0 && c + dy2[i] < columns &&
-                map_state[r + dx2[i]][c + dy2[i]] == -2) {
-              right_open = false;
-            }
+        }
+        if (private_unknown == 1) {
+          Execute(r - 1, c + dy[private_block], 1);
+          return true;
+        }
+      }
+    }
+  }
+  return false;
+}
+
+bool DiscoverPatterns4() {
+  for (int r = 0; r < rows - 2; r++) {
+    for (int c = 0; c < columns - 2; c++) {
+      // Check for the pattern:
+      // 01?
+      // 12?
+      // ???
+      if (map_state[r][c] != -2 && map_state[r][c + 1] == 1 && map_state[r + 1][c] == 1 &&
+          map_state[r + 1][c + 1] == 2 && map_state[r + 2][c + 2] == -2) {
+        bool checked = true;
+        if (c - 1 >= 0) {
+          if (map_state[r][c - 1] == -2 || map_state[r + 1][c - 1] == -2 || map_state[r + 2][c - 1] == -2) {
+            checked = false;
           }
-          if (left_open && r - 1 >= 0 && c + 1 < columns && map_state[r - 1][c + 1] == -2) {
-            // std::cout << "Pattern-Discover " << r - 1 << " " << c + 1 << std::endl;  // debug
-            Execute(r - 1, c + 1, 1);
-            return true;
+        }
+        if (r - 1 >= 0) {
+          if (map_state[r - 1][c] == -2 || map_state[r - 1][c + 1] == -2 || map_state[r - 1][c + 2] == -2) {
+            checked = false;
           }
-          if (right_open && r - 1 >= 0 && c - 1 >= 0 && map_state[r - 1][c - 1] == -2) {
-            // std::cout << "Pattern-Discover " << r - 1 << " " << c - 1 << std::endl;  // debug
-            Execute(r - 1, c - 1, 1);
-            return true;
+        }
+        if (checked) {
+          // The bottom-right corner is safe to open
+          Execute(r + 2, c + 2, 0);
+          return true;
+        }
+      }
+
+      // Check for the mirrored pattern:
+      // ?10
+      // ?21
+      // ???
+      if (map_state[r][c] == -2 && map_state[r][c + 1] == 1 && map_state[r + 1][c] == 1 &&
+          map_state[r + 1][c + 1] == 2 && map_state[r + 2][c] == -2) {
+        bool checked = true;
+        if (c + 2 < columns) {
+          if (map_state[r][c + 2] == -2 || map_state[r + 1][c + 2] == -2 || map_state[r + 2][c + 2] == -2) {
+            checked = false;
           }
+        }
+        if (r - 1 >= 0) {
+          if (map_state[r - 1][c] == -2 || map_state[r - 1][c + 1] == -2 || map_state[r - 1][c + 2] == -2) {
+            checked = false;
+          }
+        }
+        if (checked) {
+          // The bottom-left corner is safe to open
+          Execute(r + 2, c, 0);
+          return true;
+        }
+      }
+
+      // Check for the pattern:
+      // ???
+      // 12?
+      // 01?
+      if (map_state[r][c] == -2 && map_state[r][c + 1] == 1 && map_state[r + 1][c] == 1 &&
+          map_state[r + 1][c + 1] == 2 && map_state[r + 2][c] != -2) {
+        bool checked = true;
+        if (c - 1 >= 0) {
+          if (map_state[r][c - 1] == -2 || map_state[r + 1][c - 1] == -2 || map_state[r + 2][c - 1] == -2) {
+            checked = false;
+          }
+        }
+        if (r + 3 < rows) {
+          if (map_state[r + 3][c] == -2 || map_state[r + 3][c + 1] == -2 || map_state[r + 3][c + 2] == -2) {
+            checked = false;
+          }
+        }
+        if (checked) {
+          // The top-right corner is safe to open
+          Execute(r, c, 0);
+          return true;
+        }
+      }
+
+      // Check for the mirrored pattern:
+      // ???
+      // 21?
+      // 10?
+      if (map_state[r][c] == -2 && map_state[r][c + 1] == 1 && map_state[r + 1][c] == 1 &&
+          map_state[r + 1][c + 1] == 2 && map_state[r + 2][c + 1] != -2) {
+        bool checked = true;
+        if (c + 2 < columns) {
+          if (map_state[r][c + 2] == -2 || map_state[r + 1][c + 2] == -2 || map_state[r + 2][c + 2] == -2) {
+            checked = false;
+          }
+        }
+        if (r + 3 < rows) {
+          if (map_state[r + 3][c] == -2 || map_state[r + 3][c + 1] == -2 || map_state[r + 3][c + 2] == -2) {
+            checked = false;
+          }
+        }
+        if (checked) {
+          // The top-left corner is safe to open
+          Execute(r, c + 1, 0);
+          return true;
         }
       }
     }
@@ -498,7 +545,7 @@ bool MarkBestPossibleBlock() {
 
 void RandomDecide() {
   int r, c;
-  srand(time(NULL));
+  srand(114514);
   do {
     r = rand() % rows;
     c = rand() % columns;
