@@ -2,6 +2,8 @@ cmake-build-debug/
 .idea/
 out/
 2395/
+.vscode/
+build/
 2395.zip
 Minesweeper-2024.pptx
 tmp.pptx

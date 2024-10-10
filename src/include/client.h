@@ -39,7 +39,6 @@ void Execute(int r, int c, int type);
  * @details This function is designed to initialize the game. It should be called at the beginning of the game, which
  * will read the scale of the game map and the first step taken by the server (see README).
  */
-
 void InitGame() {
   int first_row, first_column;
   std::cin >> first_row >> first_column;
